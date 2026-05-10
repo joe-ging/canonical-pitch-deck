@@ -1,0 +1,15 @@
+<section>
+<h3>05. Analysis: The Math</h3>
+<h2>Video Transcoding Engine (74% of Compute)</h2>
+<table class="dt">
+<thead><tr><th>Metric</th><th>Calculation</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Large Classes</td><td>420k × 70% ÷ 200 std/cls</td><td>1,470 nodes</td></tr>
+<tr><td>Small Groups</td><td>420k × 30% ÷ 20 std/grp</td><td>6,300 nodes</td></tr>
+<tr class="total"><td>Total Transcoding Load</td><td>(+10% Safety Headroom)</td><td>~40,650 vCPUs</td></tr>
+</tbody>
+</table>
+<div style="background:rgba(94,151,173,0.1); padding:20px; border-radius:8px; margin-top:30px; text-align:left">
+    <p style="font-size:1.1em!important"><strong>Insight:</strong> Small groups are more expensive — every student feed requires processing (SFU), unlike large classes where only the teacher's feed is transcoded.</p>
+</div>
+</section>

@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Managed Private Cloud Strategy | XYZ Education</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="reveal">
+<div class="hbar"></div>
+<div class="logo-c">
+<svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg">
+<path d="M25 40c0-11 9-20 20-20s20 9 20 20-9 20-20 20-20-9-20-20zm20-14c-7.7 0-14 6.3-14 14s6.3 14 14 14 14-6.3 14-14-6.3-14-14-14zm0 6c-4.4 0-8 3.6-8 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8z" fill="#772953"/>
+<text x="75" y="52" fill="#772953" font-family="Arial,sans-serif" font-weight="bold" font-size="34" letter-spacing="2">CANONICAL</text>
+</svg>
+</div>
+<div class="slides">
+<section>
+<h3>Strategic Proposal</h3>
+<h1>Cloud<br>Repatriation</h1>
+<p style="font-size:2.5em!important;color:var(--t);margin-top:30px">Managed Private Cloud for XYZ Education</p>
+<div style="margin-top:180px;font-size:1.2em!important">
+<p style="font-weight:500">54,640 vCPU WORKLOAD • TCO OPTIMIZATION • APAC COMPLIANCE</p>
+<p style="color:var(--dm);margin-top:10px">PREPARED BY CANONICAL FIELD ENGINEERING | 2026</p>
+</div>
+</section>
+
+
+<section>
+<h3>01. Understanding Your Scale</h3>
+<h2>User Traffic & Engagement Assumptions</h2>
+<div class="g2">
+    <div class="card">
+        <p class="sub-stat">Total Registered Users</p>
+        <p class="big-stat">5.2 Million</p>
+        <p>Top-tier APAC EdTech footprint.</p>
+    </div>
+    <div class="card tl">
+        <p class="sub-stat">Peak Concurrent Users</p>
+        <p class="big-stat">420,000</p>
+        <p>Industry-high 8% concurrency ratio.</p>
+    </div>
+</div>
+<p style="margin-top:40px; color:var(--dm)">Reference: Comparable to VIPKid / Zuoyebang / Byju's operations.</p>
+</section>
+
+
+<section>
+<h3>02. Understanding Your Operations</h3>
+<h2>Class Type & Regional Governance</h2>
+<table class="dt">
+<thead><tr><th>Operating Model</th><th>Details</th></tr></thead>
+<tbody>
+<tr><td><strong>Service Mix</strong></td><td>70% Large Classes (200+ students) | 30% Small Groups (10-25 students)</td></tr>
+<tr><td><strong>Peak Windows</strong></td><td>16:00 - 21:00 (Daily) + Weekends (High intensity bursts)</td></tr>
+<tr><td><strong>Jurisdictions</strong></td><td>Mainland China, Singapore, Hong Kong</td></tr>
+<tr><td><strong>Compliance</strong></td><td>PIPL, PDPA, PDPO (Requires strict data residency)</td></tr>
+</tbody>
+</table>
+</section>
+
+
+<section>
+<h3>03. Your Requirements</h3>
+<h2>The EdTech Infrastructure Mandate</h2>
+<ul style="width:80%; text-align:left">
+    <li><strong>Sovereign Data:</strong> Full physical control of student records and class archives.</li>
+    <li><strong>Adaptive Delivery:</strong> Low-latency WebRTC for interactive classes across APAC.</li>
+    <li><strong>Massive Throughput:</strong> Ability to handle 1.5 PB of video egress monthly.</li>
+    <li><strong>Operational Agility:</strong> Automated switching between peak live classes and off-peak AI processing.</li>
+</ul>
+</section>
+
+
+<section>
+<h3>04. The Problem</h3>
+<h2>The Cloud Cost Trap</h2>
+<div class="g2">
+<div class="card">
+<h4 style="font-size:1.8em;color:var(--p);font-weight:700">Financial Hemorrhage</h4>
+<p style="margin-top:15px">Current AWS Run-rate: <strong>.3M/year</strong>.</p>
+<p style="margin-top:15px">Paying a "cloud premium" on predictable, 24/7 core transcoding workloads.</p>
+</div>
+<div class="card tl">
+<h4 style="font-size:1.8em;color:var(--p);font-weight:700">The Paradox</h4>
+<p style="margin-top:15px">Reserved Instances (RIs) force you to pay for 100% capacity even when classes aren't in session.</p>
+<p style="margin-top:15px">Result: <strong>30% utilization</strong> for 14 hours every day.</p>
+</div>
+</div>
+</section>
+
+
+<section>
+<h3>05. Analysis: The Math</h3>
+<h2>Video Transcoding Engine (74% of Compute)</h2>
+<table class="dt">
+<thead><tr><th>Metric</th><th>Calculation</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td>Large Classes</td><td>420k × 70% ÷ 200 std/cls</td><td>1,470 nodes</td></tr>
+<tr><td>Small Groups</td><td>420k × 30% ÷ 20 std/grp</td><td>6,300 nodes</td></tr>
+<tr class="total"><td>Total Transcoding Load</td><td>(+10% Safety Headroom)</td><td>~40,650 vCPUs</td></tr>
+</tbody>
+</table>
+<div style="background:rgba(94,151,173,0.1); padding:20px; border-radius:8px; margin-top:30px; text-align:left">
+    <p style="font-size:1.1em!important"><strong>Insight:</strong> Small groups are more expensive — every student feed requires processing (SFU), unlike large classes where only the teacher's feed is transcoded.</p>
+</div>
+</section>
+
+
+<section>
+<h3>06. Infra Summary</h3>
+<h2>54,640 vCPUs Capacity Footprint</h2>
+<div class="g2">
+<table class="dt">
+<thead><tr><th>Compute Tier</th><th>vCPUs</th></tr></thead>
+<tbody>
+<tr><td>Video Transcoding</td><td>40,650</td></tr>
+<tr><td>Media / WebRTC</td><td>6,400</td></tr>
+<tr><td>Application / API</td><td>3,200</td></tr>
+<tr><td>DB / AI Inference</td><td>4,400</td></tr>
+</tbody>
+</table>
+<table class="dt">
+<thead><tr><th>Storage & Network</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Block (NVMe)</td><td>500 TB</td></tr>
+<tr><td>Object (Ceph)</td><td>5 PB</td></tr>
+<tr><td>Egress</td><td>18 PB/yr</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+
+<section>
+<h3>07. Who is Canonical?</h3>
+<h2>The Open Source Powerhouse</h2>
+<div class="g2">
+<div style="text-align:left">
+<h4 style="font-size:1.8em;color:var(--t)">Global Leader</h4>
+<ul style="margin-top:15px">
+<li>Founded 2004 | 1,000+ Engineers</li>
+<li><strong>Publisher of Ubuntu</strong></li>
+<li>70% of Public Cloud workloads</li>
+<li>AT&T, Bloomberg, NASA trust us</li>
+</ul>
+</div>
+<div style="text-align:left">
+<h4 style="font-size:1.8em;color:var(--t)">Differentiator</h4>
+<p style="margin-top:15px">We don't charge per-core or per-socket.</p>
+<p>Our model is <strong>per-host/per-year</strong>. Predictable, transparent, and built for massive scale like yours.</p>
+</div>
+</div>
+</section>
+
+
+<section>
+<h3>08. Our Products</h3>
+<h2>The Integrated Stack for EdTech</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:25px;width:100%;margin-top:20px">
+<div class="card"><h4 style="font-size:1.4em;color:var(--p)">MAAS</h4><p style="font-size:0.9em!important">Bare-metal at cloud speed.</p></div>
+<div class="card tl"><h4 style="font-size:1.4em;color:var(--p)">OpenStack</h4><p style="font-size:0.9em!important">Private IaaS for massive compute.</p></div>
+<div class="card"><h4 style="font-size:1.4em;color:var(--p)">Ceph</h4><p style="font-size:0.9em!important">Unified petabyte-scale storage.</p></div>
+<div class="card tl"><h4 style="font-size:1.4em;color:var(--p)">Juju</h4><p style="font-size:0.9em!important">Model-driven orchestration.</p></div>
+<div class="card"><h4 style="font-size:1.4em;color:var(--p)">LXD</h4><p style="font-size:0.9em!important">Ultra-dense system containers.</p></div>
+<div class="card tl"><h4 style="font-size:1.4em;color:var(--p)">Ubuntu Pro</h4><p style="font-size:0.9em!important">10-year security & compliance.</p></div>
+</div>
+</section>
+
+
+<section>
+<h3>09. Economics</h3>
+<h2>Better Value than Red Hat & VMware</h2>
+<div class="g2">
+<table class="dt">
+<thead><tr><th>Service</th><th>Unit Pricing</th></tr></thead>
+<tbody>
+<tr><td>MAAS Support</td><td>- / host</td></tr>
+<tr><td>Managed OpenStack</td><td>~,000 / host</td></tr>
+<tr><td>Self-Managed</td><td>Ubuntu Pro Per Node</td></tr>
+</tbody>
+</table>
+<div style="text-align:left">
+    <h4 style="font-size:1.5em;color:var(--p)">Case Study: Nayatel</h4>
+    <p style="margin-top:15px">Replaced proprietary virtualization with Charmed OpenStack to build Pakistan's first cost-effective Public Cloud.</p>
+    <p style="margin-top:10px; font-weight:700">Predictable growth without per-core penalties.</p>
+</div>
+</div>
+</section>
+
+
+<section>
+<h3>10. The Proposal</h3>
+<h2>Elastic Sovereign Cloud</h2>
+<div class="g2">
+<div style="background:var(--bg);border-radius:12px;padding:30px;text-align:left">
+<h4 style="font-size:1.3em;color:var(--p)">Peak Window (16:00 - 21:00)</h4>
+<div class="peak-bar" style="width:100%;background:var(--p)">40,650 vCPUs: Live Transcoding</div>
+<div class="peak-bar" style="width:30%;background:var(--t)">Core Services</div>
+<h4 style="font-size:1.3em;color:var(--p);margin-top:40px">Off-Peak Window</h4>
+<div class="peak-bar" style="width:60%;background:#e95420">AI Analytics & ML Training</div>
+<div class="peak-bar" style="width:20%;background:var(--p)">Base VOD</div>
+</div>
+<div style="text-align:left">
+<h4 style="font-size:1.5em;color:var(--t)">Zero Waste with MAAS + Juju</h4>
+<p style="margin-top:15px">Nodes are automatically re-provisioned between workloads.</p>
+<p style="margin-top:10px"><strong>95% Hardware Utilization</strong> vs 30% on Public Cloud.</p>
+<p style="margin-top:20px; font-weight:700">100% PIPL Sovereign on your OWN hardware.</p>
+</div>
+</div>
+</section>
+
+
+<section>
+<h3>11. Financial Proof</h3>
+<h2>3-Year TCO Comparison ($M)</h2>
+<div class="cbox"><canvas id="tcoBar"></canvas></div>
+<p class="note">Sources: calculator.aws | azure.microsoft.com/pricing/calculator | cloud.google.com/products/calculator | Canonical Pricing Report 2022</p>
+</section>
+
+
+<section>
+<h3>12. The Saving</h3>
+<h2>How You Save $21.4M vs AWS</h2>
+<table class="dt">
+<thead><tr><th>Component (3 Years)</th><th>AWS Cost</th><th>Canonical Cost</th></tr></thead>
+<tbody>
+<tr><td>Compute & Instances</td><td>$28.8M</td><td>$18.4M (Full Stack)</td></tr>
+<tr><td>Network Egress (18PB/yr)</td><td>$4.8M</td><td>$0 (Included in DC ops)</td></tr>
+<tr><td>Object Storage (5PB)</td><td>$4.5M</td><td>$0 (Included in hardware)</td></tr>
+<tr class="total"><td>Total 3-Year TCO</td><td>$39.8M</td><td>$18.4M</td></tr>
+</tbody>
+</table>
+<p style="margin-top:30px; color:var(--p); font-weight:700; font-size:1.5em!important">54% Overall Reduction</p>
+</section>
+
+
+<section>
+<h3>13. Verification: AWS</h3>
+<h2>Calculator Inputs (Singapore ap-southeast-1)</h2>
+<table class="dt">
+<thead><tr><th>Workload</th><th>Type</th><th>Qty</th></tr></thead>
+<tbody>
+<tr><td>Transcoding</td><td>c7i.4xlarge</td><td>2,540</td></tr>
+<tr><td>WebRTC</td><td>c7i.2xlarge</td><td>800</td></tr>
+<tr><td>App Tier</td><td>m7i.2xlarge</td><td>400</td></tr>
+<tr><td>Database</td><td>r7i.4xlarge</td><td>150</td></tr>
+</tbody>
+</table>
+<p class="note">Model: 3-Year Reserved, All Upfront. Verified at calculator.aws</p>
+</section>
+
+
+<section>
+<h3>14. Verification: Azure & GCP</h3>
+<h2>Competitive Mapping</h2>
+<div class="g2">
+<table class="dt">
+<thead><tr><th>Tier</th><th>Azure (SEA)</th><th>GCP (SG)</th></tr></thead>
+<tbody>
+<tr><td>Compute</td><td>F16s v2 / D8s v5</td><td>c2-std-16 / e2-std-8</td></tr>
+<tr><td>Storage</td><td>Blob Hot</td><td>GCS Standard</td></tr>
+<tr><td>Egress</td><td>Bandwidth (1.5PB)</td><td>Premium Egress</td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Verified via azure.microsoft.com and cloud.google.com/products/calculator</p>
+</section>
+
+
+<section>
+<h3>15. Delivering Success</h3>
+<h2>Implementation Roadmap</h2>
+<div class="timeline">
+<div class="tl-item"><h4>Wk 1-2</h4><p>Discovery & Audit</p></div>
+<div class="tl-item"><h4>Wk 3-6</h4><p>Architecture Design</p></div>
+<div class="tl-item"><h4>Wk 7-14</h4><p>Build & Deploy</p></div>
+<div class="tl-item"><h4>Wk 15-18</h4><p>Phased Migration</p></div>
+<div class="tl-item"><h4>Ongoing</h4><p>24/7 Managed Ops</p></div>
+</div>
+<p style="margin-top:60px"><strong>Our Commitment:</strong> We don't just sell software. We operate your cloud for you with a 99.9% SLA.</p>
+</section>
+
+
+<section>
+<h1 style="font-size:10em!important;letter-spacing:-6px">RECLAIM<br>CONTROL.</h1>
+<p style="font-size:2.8em!important;margin-top:40px;color:var(--t)">$21.4M saved. 100% sovereign.</p>
+<p style="font-size:1.8em!important;margin-top:20px;color:var(--dm)">Zero per-core taxes. 95% utilization. Expertly managed.</p>
+<div style="margin-top:70px">
+<button style="background:var(--p);color:white;padding:35px 120px;font-size:2.2em;font-weight:700;border:none;border-radius:4px;cursor:pointer">START ARCHITECTURE AUDIT →</button>
+</div>
+</section>
+
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="assets/script.js"></script>
+</body>
+</html>

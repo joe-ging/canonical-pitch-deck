@@ -1,18 +1,16 @@
 <section>
-<h3>15. AWS Calculator Mapping</h3>
-<h2>AWS Pricing (ap-southeast-1, 3yr RI)</h2>
+<h3>13. Verification: AWS</h3>
+<h2>AWS Pricing Calculator Input Mapping (Singapore)</h2>
 <table class="dt">
-<thead><tr><th>Workload</th><th>Instance</th><th>Qty</th><th>vCPUs</th><th>3yr Cost</th></tr></thead>
+<thead><tr><th>Workload</th><th>Instance Type</th><th>Qty</th><th>vCPUs</th><th>RAM</th><th>Pricing Model</th></tr></thead>
 <tbody>
-<tr><td>Transcoding</td><td><code>c7i.4xlarge</code></td><td>2,540</td><td>40,640</td><td>$22.1M</td></tr>
-<tr><td>Media/WebRTC</td><td><code>c7i.2xlarge</code></td><td>800</td><td>6,400</td><td>$3.5M</td></tr>
-<tr><td>App/API</td><td><code>m7i.2xlarge</code></td><td>400</td><td>3,200</td><td>$2.1M</td></tr>
-<tr><td>Database</td><td><code>r7i.4xlarge</code></td><td>150</td><td>2,400</td><td>$1.6M</td></tr>
-<tr><td>AI Inference</td><td><code>c7i.4xlarge</code></td><td>125</td><td>2,000</td><td>$1.1M</td></tr>
-<tr><td>Storage (gp3 + S3)</td><td colspan="2">500TB + 5PB</td><td>—</td><td>$5.3M</td></tr>
-<tr><td>Egress</td><td colspan="2">1.5PB/mo × $0.09/GB</td><td>—</td><td>$4.1M</td></tr>
-<tr class="total"><td>AWS TOTAL (3yr)</td><td colspan="3"></td><td>$39.8M</td></tr>
+<tr><td>Transcoding</td><td><code>c7i.4xlarge</code></td><td>2,540</td><td>16</td><td>32 GB</td><td>3yr Reserved</td></tr>
+<tr><td>Media/WebRTC</td><td><code>c7i.2xlarge</code></td><td>800</td><td>8</td><td>16 GB</td><td>3yr Reserved</td></tr>
+<tr><td>App/API</td><td><code>m7i.2xlarge</code></td><td>400</td><td>8</td><td>32 GB</td><td>3yr Reserved</td></tr>
+<tr><td>Database</td><td><code>r7i.4xlarge</code></td><td>150</td><td>16</td><td>128 GB</td><td>3yr Reserved</td></tr>
+<tr><td>AI Inference</td><td><code>c7i.4xlarge</code></td><td>125</td><td>16</td><td>32 GB</td><td>3yr Reserved</td></tr>
+<tr class="total"><td><strong>Storage / Net</strong></td><td colspan="4">500TB gp3 | 5PB S3 | 1.5PB/mo Egress</td><td>Pay-as-you-go</td></tr>
 </tbody>
 </table>
-<p class="note">Source: calculator.aws | Region: ap-southeast-1 | Model: 3yr Reserved All Upfront</p>
+<p class="note">URL: https://calculator.aws/ | Region: ap-southeast-1</p>
 </section>

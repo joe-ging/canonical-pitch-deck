@@ -1,12 +1,41 @@
 <section>
-<h3>09. The Charmed Stack</h3>
-<h2>Model-Driven Infrastructure Orchestration</h2>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;width:100%;margin-top:20px">
-<div class="card"><h4 style="font-size:1.4em;color:var(--p)">MAAS</h4><p style="font-size:0.85em!important"><strong>Metal-as-a-Service:</strong> Automated bare-metal lifecycle. Provisions servers via API in minutes, effectively turning physical hardware into a private cloud.</p></div>
-<div class="card tl"><h4 style="font-size:1.4em;color:var(--p)">OpenStack</h4><p style="font-size:0.85em!important"><strong>Charmed Private Cloud:</strong> Highly automated OpenStack deployment. Zero-downtime upgrades and model-driven operations via Juju charms.</p></div>
-<div class="card"><h4 style="font-size:1.4em;color:var(--p)">Ceph</h4><p style="font-size:0.85em!important"><strong>Software-Defined Storage:</strong> Scalable, resilient storage for block, file, and object data. Powers the high-performance media cache and archives.</p></div>
-<div class="card tl"><h4 style="font-size:1.4em;color:var(--p)">Juju</h4><p style="font-size:0.85em!important"><strong>Orchestration Engine:</strong> Simplifies complex software management. Uses "Charms" to automate Day-0 deployment and Day-2 operations (scaling/patching).</p></div>
-<div class="card"><h4 style="font-size:1.4em;color:var(--p)">LXD</h4><p style="font-size:0.85em!important"><strong>System Containers:</strong> Provides VM-like isolation with container efficiency. Ideal for high-density video processing workloads and CI/CD pipelines.</p></div>
-<div class="card tl"><h4 style="font-size:1.4em;color:var(--p)">Ubuntu Pro</h4><p style="font-size:0.85em!important"><strong>Full-Stack Security:</strong> 10-year security maintenance, FIPS compliance, and Kernel Livepatch for zero-downtime kernel updates.</p></div>
+<h3>10. The Charmed Stack</h3>
+<h2>Architectural Blueprint: Metal to Cloud</h2>
+<div class="g2">
+<div class="card" style="border-top-color:var(--p)">
+<h4 style="font-size:1.3em;color:var(--p)">1. Infrastructure Layer (MAAS)</h4>
+<p style="font-size:0.9em!important;margin-top:10px"><strong>"Bare Metal as a Service"</strong></p>
+<ul style="font-size:0.85em!important;margin-top:10px">
+<li>Automated provisioning of 5,000+ servers.</li>
+<li>IPAM, DHCP, and PXE boot management.</li>
+<li>Inventory control (CPU, RAM, Disk, NIC).</li>
+</ul>
+<h4 style="font-size:1.3em;color:var(--p);margin-top:25px">2. Storage Layer (Ceph)</h4>
+<p style="font-size:0.9em!important;margin-top:10px"><strong>"Software Defined Storage"</strong></p>
+<ul style="font-size:0.85em!important;margin-top:10px">
+<li>Scalable Object & Block storage for 5PB+.</li>
+<li>Self-healing, no single point of failure.</li>
+<li>Reuses commodity hardware for high performance.</li>
+</ul>
+</div>
+<div class="card tl">
+<h4 style="font-size:1.3em;color:var(--t)">3. Network & Compute (OpenStack)</h4>
+<p style="font-size:0.9em!important;margin-top:10px"><strong>"The Cloud Engine"</strong></p>
+<ul style="font-size:0.85em!important;margin-top:10px">
+<li><strong>KVM:</strong> High-performance virtualization.</li>
+<li><strong>OVN/OVS:</strong> Software Defined Networking.</li>
+<li>Multi-tenancy and resource quotas.</li>
+</ul>
+<h4 style="font-size:1.3em;color:var(--t);margin-top:25px">4. Operations Layer (Juju)</h4>
+<p style="font-size:0.9em!important;margin-top:10px"><strong>"Model-Driven Automation"</strong></p>
+<ul style="font-size:0.85em!important;margin-top:10px">
+<li>Encapsulates operational code into "Charms".</li>
+<li>Day-0 to Day-2 lifecycle management.</li>
+<li>Scale, upgrade, and integrate with one command.</li>
+</ul>
+</div>
+</div>
+<div style="background:rgba(94,151,173,0.1);padding:20px;border-radius:10px;margin-top:30px;font-size:1.1em!important;text-align:left">
+<strong>Macro View:</strong> We don't just sell software; we provide a <strong>consistent operational model</strong>. Whether it's 10 nodes or 10,000 nodes, the management logic remains identical through Juju and MAAS.
 </div>
 </section>

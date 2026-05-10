@@ -1,16 +1,18 @@
 <section>
 <h3>05. Workload Decomposition: Tier 1</h3>
-<h2>Video Transcoding (74% of Compute)</h2>
+<h2>Video Transcoding Engine (The Cost Monster)</h2>
 <table class="dt">
 <thead><tr><th>Metric</th><th>Calculation</th><th>Result</th></tr></thead>
 <tbody>
-<tr><td>Concurrent Large Classes</td><td>420k × 70% ÷ 200 std/cls</td><td>1,470 classes</td></tr>
-<tr><td>vCPUs per Large Class</td><td>4 ABR outputs × 2 vCPUs</td><td>8 vCPUs</td></tr>
-<tr><td>Large Class Subtotal</td><td>1,470 × 8</td><td>11,760 vCPUs</td></tr>
-<tr><td>Concurrent Small Groups</td><td>420k × 30% ÷ 20 std/grp</td><td>6,300 groups</td></tr>
-<tr><td>vCPUs per Small Group</td><td>SFU relay + 2 composite feeds</td><td>4 vCPUs</td></tr>
-<tr><td>Small Group Subtotal</td><td>6,300 × 4</td><td>25,200 vCPUs</td></tr>
-<tr class="total"><td>Tier 1 Total</td><td>(+10% Safety Headroom)</td><td>~40,650 vCPUs</td></tr>
+<tr><td>Concurrent Large Classes</td><td>420k × 70% ÷ 200 students/class</td><td class="hl">1,470 classes</td></tr>
+<tr><td>vCPUs per Large Class</td><td>4 output resolutions × 2 vCPUs/stream</td><td class="hl">8 vCPUs</td></tr>
+<tr><td>Large Class Subtotal</td><td>1,470 × 8</td><td class="hl">11,760 vCPUs</td></tr>
+<tr><td>Concurrent Small Groups</td><td>420k × 30% ÷ 20 students/group</td><td class="hl">6,300 groups</td></tr>
+<tr><td>vCPUs per Small Group</td><td>SFU relay + 2 composite feeds × 2 vCPUs</td><td class="hl">4 vCPUs</td></tr>
+<tr><td>Small Group Subtotal</td><td>6,300 × 4</td><td class="hl">25,200 vCPUs</td></tr>
+<tr><td>Transcoding Subtotal</td><td></td><td class="hl">36,960 vCPUs</td></tr>
+<tr class="total"><td>+ 10% Headroom</td><td>Safety margin for encoding spikes</td><td>~40,650 vCPUs</td></tr>
 </tbody>
 </table>
+<p class="note">⚠ Small groups cost MORE than large classes — every student's feed needs processing via SFU, whereas large classes only transcode the teacher's single feed.</p>
 </section>

@@ -1,15 +1,15 @@
 <section>
 <h3>06. Workload Decomposition: Tiers 2-5</h3>
-<h2>Media Signaling & Application Core</h2>
+<h2>Supporting Infrastructure Layers</h2>
 <table class="dt">
-<thead><tr><th>Tier</th><th>Sizing Logic</th><th>Rationale</th><th>vCPUs</th></tr></thead>
+<thead><tr><th>Tier</th><th>Purpose</th><th>Sizing Rationale</th><th>vCPUs</th></tr></thead>
 <tbody>
-<tr><td><strong>Tier 2: Media</strong></td><td>420k CCU ÷ 80 conn/vCPU</td><td>Signaling, WebRTC relay, TURN</td><td class="hl">6,300</td></tr>
-<tr><td><strong>Tier 3: App/API</strong></td><td>420k CCU ÷ 150 users/vCPU</td><td>Auth, Dashboard, Class Meta</td><td class="hl">2,800</td></tr>
-<tr><td><strong>Tier 4: Database</strong></td><td>8 Nodes × 256GB RAM</td><td>PG/Redis/ES clusters</td><td class="hl">2,400</td></tr>
-<tr><td><strong>Tier 5: AI</strong></td><td>1 vCPU per 200 concurrent users</td><td>NLP, Auto-grading, Speech</td><td class="hl">2,100</td></tr>
-<tr class="total"><td>Tiers 2-5 Total</td><td>(+ Safety Margin)</td><td></td><td>~14,000 vCPUs</td></tr>
+<tr><td><strong>Tier 2: Media Servers</strong></td><td>WebRTC signaling, STUN/TURN relay, RTMP ingest</td><td>~1 vCPU per 80 concurrent WebRTC connections. 420k ÷ 80 ≈ 5,250 + overhead</td><td class="hl">6,400</td></tr>
+<tr><td><strong>Tier 3: Application / API</strong></td><td>User auth, class scheduling, payment, homework, admin dashboard</td><td>~1 vCPU per 150 concurrent API users</td><td class="hl">3,200</td></tr>
+<tr><td><strong>Tier 4: Database</strong></td><td>PostgreSQL/MySQL clusters, Redis cache, ElasticSearch</td><td>High memory: 128-256GB per DB node</td><td class="hl">2,400</td></tr>
+<tr><td><strong>Tier 5: AI / ML Inference</strong></td><td>Speech recognition, auto-grading, content recommendation</td><td>CPU inference (cost-sensitive EdTech)</td><td class="hl">2,000</td></tr>
+<tr class="total"><td>Tiers 2-5 Total</td><td></td><td></td><td>14,000 vCPUs</td></tr>
 </tbody>
 </table>
-<p class="note">Combined with Tier 1, this brings the total requirement to **54,640 vCPUs**.</p>
+<p class="note">Combined with Tier 1 (~40,650), this brings the total requirement to <strong>54,650 vCPUs</strong>.</p>
 </section>

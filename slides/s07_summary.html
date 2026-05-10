@@ -1,23 +1,35 @@
 <section>
-<h3>06. Infra Summary</h3>
-<h2>54,640 vCPUs Capacity Footprint</h2>
+<h3>07. Infrastructure Summary</h3>
+<h2>Total Capacity Requirements</h2>
 <div class="g2">
+<div>
 <table class="dt">
-<thead><tr><th>Compute Tier</th><th>vCPUs</th></tr></thead>
+<thead><tr><th>Tier</th><th>vCPUs</th><th>% of Total</th></tr></thead>
 <tbody>
-<tr><td>Video Transcoding</td><td>40,650</td></tr>
-<tr><td>Media / WebRTC</td><td>6,400</td></tr>
-<tr><td>Application / API</td><td>3,200</td></tr>
-<tr><td>DB / AI Inference</td><td>4,400</td></tr>
+<tr><td>Video Transcoding</td><td class="hl">40,650</td><td>74%</td></tr>
+<tr><td>Media/WebRTC</td><td>6,400</td><td>12%</td></tr>
+<tr><td>Application/API</td><td>3,200</td><td>6%</td></tr>
+<tr><td>Database</td><td>2,400</td><td>4%</td></tr>
+<tr><td>AI Inference</td><td>2,000</td><td>4%</td></tr>
+<tr class="total"><td>TOTAL</td><td>54,650</td><td>100%</td></tr>
 </tbody>
 </table>
+</div>
+<div>
 <table class="dt">
-<thead><tr><th>Storage & Network</th><th>Value</th></tr></thead>
+<thead><tr><th>Type</th><th>Amount</th><th>Purpose</th></tr></thead>
 <tbody>
-<tr><td>Block (NVMe)</td><td>500 TB</td></tr>
-<tr><td>Object (Ceph)</td><td>5 PB</td></tr>
-<tr><td>Egress</td><td>18 PB/yr</td></tr>
+<tr><td>Block (SSD/NVMe)</td><td class="hl">500 TB</td><td>Hot database storage, transcoding cache</td></tr>
+<tr><td>Object (HDD/Ceph)</td><td class="hl">5 PB</td><td>Recorded class archival, compliance logs</td></tr>
 </tbody>
 </table>
+<table class="dt" style="margin-top:20px">
+<thead><tr><th>Network Metric</th><th>Value</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>Monthly Egress</td><td class="hl">1.5 PB/month</td><td>Video streaming to students</td></tr>
+<tr><td>Annual Egress</td><td class="hl">18 PB/year</td><td>#1 AWS cost driver after compute</td></tr>
+</tbody>
+</table>
+</div>
 </div>
 </section>

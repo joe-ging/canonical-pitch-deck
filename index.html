@@ -38,8 +38,8 @@
 <tr><td>Platform Type</td><td>K-12 Online Education (Live + VOD)</td><td>Comparable to VIPKid / Zuoyebang / Byju's</td></tr>
 <tr><td>Registered Students</td><td class="hl">5.2 Million</td><td>Top-tier APAC EdTech scale</td></tr>
 <tr><td>Peak Concurrent Users</td><td class="hl">420,000</td><td>~8% concurrency ratio (industry: 3-10%)</td></tr>
-<tr><td>Large Class (大班课)</td><td>70% of traffic, 200+ students/class</td><td>1 teacher → many. High transcoding cost</td></tr>
-<tr><td>Small Group (小班课)</td><td>30% of traffic, 10-25 students/class</td><td>Multi-way video. SFU architecture</td></tr>
+<tr><td>Large Class</td><td>70% of traffic, 200+ students/class</td><td>1 teacher → many. High transcoding cost</td></tr>
+<tr><td>Small Group</td><td>30% of traffic, 10-25 students/class</td><td>Multi-way video. SFU architecture</td></tr>
 <tr><td>Peak Hours</td><td>16:00 - 21:00 (5hrs daily) + weekends</td><td>After-school tutoring pattern</td></tr>
 <tr><td>Markets</td><td>Mainland China, Singapore, Hong Kong</td><td>PIPL / PDPA / PDPO jurisdictions</td></tr>
 </tbody>
@@ -343,7 +343,7 @@
 <h3>15. Honest Comparison</h3>
 <h2>Annual Cost: Reserved vs K8s vs Private Cloud</h2>
 <table class="dt">
-<thead><tr><th>Cost Component</th><th style="color:#E95420">AWS Reserved</th><th style="color:#E95420">AWS + K8s 弹性</th><th style="color:#772953">Canonical Private</th></tr></thead>
+<thead><tr><th>Cost Component</th><th style="color:#E95420">AWS Reserved</th><th style="color:#E95420">AWS + K8s Elastic</th><th style="color:#fff">Canonical Private</th></tr></thead>
 <tbody>
 <tr><td><strong>Compute</strong></td><td>$9.6M/yr</td><td>~$8.5M/yr</td><td class="hl">$3.2M ops + $2.9M amort.</td></tr>
 <tr><td><strong>Egress (1.5 PB/mo)</strong></td><td>$1.6M/yr</td><td>$1.6M/yr</td><td class="hl">≈ $0</td></tr>
@@ -422,7 +422,7 @@ Sources: calculator.aws | azure.microsoft.com/pricing/calculator | cloud.google.
 <h3>19. Cost Breakdown: All Providers</h3>
 <h2>Where Does the Money Go? (3-Year)</h2>
 <table class="dt">
-<thead><tr><th>Cost Component</th><th style="color:#E95420">AWS</th><th style="color:#34A853">GCP</th><th style="color:#0078D4">Azure</th><th style="color:#772953">Canonical</th></tr></thead>
+<thead><tr><th>Cost Component</th><th style="color:#E95420">AWS</th><th style="color:#34A853">GCP</th><th style="color:#0078D4">Azure</th><th style="color:#fff">Canonical</th></tr></thead>
 <tbody>
 <tr><td>Compute (54,640 vCPUs)</td><td>$28.8M</td><td>$26.7M</td><td>$25.8M</td><td class="hl">$8.8M CapEx</td></tr>
 <tr><td>Object Storage (5PB)</td><td>$4.5M</td><td>$3.6M</td><td>$3.6M</td><td class="hl">$0 (Ceph on owned HW)</td></tr>

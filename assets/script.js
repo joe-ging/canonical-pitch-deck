@@ -6,25 +6,44 @@ Reveal.initialize({
     height: 1080,
     margin: 0.04,
     controls: true,
-    progress: true
+    progress: false // We use our own progress bar
 });
 
-// Color palette inspired by Canonical Cloud Pricing Report 2022
-// Each provider gets a distinct, non-purple color. Canonical stays Aubergine.
-const COLORS = {
-    canonical: '#772953',  // Canonical Aubergine (purple)
-    aws:       '#E95420',  // Ubuntu Orange (warm, stands out)
-    azure:     '#0078D4',  // Azure Blue
-    gcp:       '#34A853',  // Google Green
+// ─── Color Palette (Canonical Report 2022) ───
+const C = {
+    canonical: '#772953',
+    aws:       '#E95420',
+    azure:     '#0078D4',
+    gcp:       '#34A853',
 };
 
-// --- Cumulative Line Chart (s14_tco_chart.html) ---
+// ─── Progress Bar + Slide Counter ───
+const progressFill = document.getElementById('progress-fill');
+const slideCounter = document.getElementById('slide-counter');
+
+function updateProgress() {
+    const total = Reveal.getTotalSlides();
+    const current = Reveal.getSlidePastCount() + 1;
+    const pct = ((current) / total) * 100;
+    progressFill.style.width = pct + '%';
+    slideCounter.textContent = current + ' / ' + total;
+}
+
+// ─── Cumulative Line Chart (Animated Draw) ───
 let lineChart;
 function initLineChart() {
     const canvas = document.getElementById('tcoLine');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (lineChart) lineChart.destroy();
+
+    // Start with zeros, then animate to real values
+    const realData = {
+        aws:       [0, 13.3, 26.6, 39.8],
+        gcp:       [0, 12.8, 25.6, 38.4],
+        azure:     [0, 11.9, 23.8, 35.8],
+        canonical: [0, 12.0, 15.2, 18.4],
+    };
 
     lineChart = new Chart(ctx, {
         type: 'line',
@@ -33,143 +52,120 @@ function initLineChart() {
             datasets: [
                 {
                     label: 'AWS',
-                    data: [0, 13.3, 26.6, 39.8],
-                    borderColor: COLORS.aws,
-                    backgroundColor: COLORS.aws + '18',
-                    borderWidth: 6,
-                    pointRadius: 8,
-                    pointBackgroundColor: COLORS.aws,
+                    data: [0, 0, 0, 0],
+                    borderColor: C.aws,
+                    borderWidth: 5,
+                    pointRadius: 7,
+                    pointBackgroundColor: C.aws,
                     fill: false,
-                    tension: 0.2
+                    tension: 0.25
                 },
                 {
                     label: 'GCP',
-                    data: [0, 12.8, 25.6, 38.4],
-                    borderColor: COLORS.gcp,
-                    backgroundColor: COLORS.gcp + '18',
-                    borderWidth: 6,
-                    pointRadius: 8,
-                    pointBackgroundColor: COLORS.gcp,
+                    data: [0, 0, 0, 0],
+                    borderColor: C.gcp,
+                    borderWidth: 5,
+                    pointRadius: 7,
+                    pointBackgroundColor: C.gcp,
                     fill: false,
-                    tension: 0.2
+                    tension: 0.25
                 },
                 {
                     label: 'Azure',
-                    data: [0, 11.9, 23.8, 35.8],
-                    borderColor: COLORS.azure,
-                    backgroundColor: COLORS.azure + '18',
-                    borderWidth: 6,
-                    pointRadius: 8,
-                    pointBackgroundColor: COLORS.azure,
+                    data: [0, 0, 0, 0],
+                    borderColor: C.azure,
+                    borderWidth: 5,
+                    pointRadius: 7,
+                    pointBackgroundColor: C.azure,
                     fill: false,
-                    tension: 0.2
+                    tension: 0.25
                 },
                 {
                     label: 'Canonical',
-                    data: [0, 12.0, 15.2, 18.4],
-                    borderColor: COLORS.canonical,
-                    backgroundColor: COLORS.canonical + '30',
-                    borderWidth: 10,
-                    pointRadius: 10,
-                    pointBackgroundColor: COLORS.canonical,
+                    data: [0, 0, 0, 0],
+                    borderColor: C.canonical,
+                    backgroundColor: C.canonical + '20',
+                    borderWidth: 9,
+                    pointRadius: 9,
+                    pointBackgroundColor: C.canonical,
                     fill: true,
-                    tension: 0.2
+                    tension: 0.25,
+                    borderDash: []
                 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            animation: {
-                duration: 3000,
-                easing: 'easeInOutQuart'
-            },
+            animation: { duration: 1200, easing: 'easeOutQuart' },
             scales: {
                 y: {
                     beginAtZero: true,
                     max: 45,
                     ticks: {
-                        font: { size: 30 },
+                        font: { size: 28 },
                         callback: v => '$' + v + 'M'
                     },
                     title: {
                         display: true,
                         text: 'Cumulative Cost ($M)',
-                        font: { size: 28, weight: 'bold' }
+                        font: { size: 26, weight: 'bold' }
                     }
                 },
-                x: {
-                    ticks: { font: { size: 34, weight: 'bold' } }
-                }
+                x: { ticks: { font: { size: 32, weight: 'bold' } } }
             },
             plugins: {
                 legend: {
                     position: 'top',
                     labels: {
-                        font: { size: 28, weight: 'bold' },
+                        font: { size: 26, weight: 'bold' },
                         usePointStyle: true,
-                        pointStyle: 'line',
+                        pointStyle: 'circle',
                         padding: 30
                     }
                 },
                 tooltip: {
+                    titleFont: { size: 22 },
+                    bodyFont: { size: 20 },
                     callbacks: {
-                        label: c => c.dataset.label + ': $' + c.raw + 'M'
+                        label: c => c.dataset.label + ': $' + c.raw.toFixed(1) + 'M'
                     }
                 }
             }
         }
     });
-}
 
-// --- Bar Chart for s13 TCO table backup (if still used) ---
-let barChart;
-function initBarChart() {
-    const canvas = document.getElementById('tcoBar');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (barChart) barChart.destroy();
+    // Progressive animation: reveal data point by point
+    const steps = [
+        { idx: 1, delay: 600 },   // Year 1
+        { idx: 2, delay: 1400 },  // Year 2
+        { idx: 3, delay: 2200 },  // Year 3
+    ];
 
-    barChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['AWS', 'GCP', 'Azure', 'Canonical'],
-            datasets: [{
-                label: '3yr TCO ($M)',
-                data: [39.8, 38.4, 35.8, 18.4],
-                backgroundColor: [COLORS.aws, COLORS.gcp, COLORS.azure, COLORS.canonical],
-                borderRadius: 8
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: { duration: 2000, easing: 'easeOutQuart' },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 45,
-                    ticks: { font: { size: 32 }, callback: v => '$' + v + 'M' }
-                },
-                x: {
-                    ticks: { font: { size: 40, weight: 'bold' } }
-                }
-            },
-            plugins: {
-                legend: { display: false },
-                tooltip: { callbacks: { label: c => '$' + c.raw + 'M' } }
-            }
-        }
+    steps.forEach(step => {
+        setTimeout(() => {
+            lineChart.data.datasets[0].data[step.idx] = realData.aws[step.idx];
+            lineChart.data.datasets[1].data[step.idx] = realData.gcp[step.idx];
+            lineChart.data.datasets[2].data[step.idx] = realData.azure[step.idx];
+            lineChart.data.datasets[3].data[step.idx] = realData.canonical[step.idx];
+            lineChart.update('active');
+        }, step.delay);
     });
 }
 
-// Smart init: find whichever chart canvas is on the current slide
+// ─── Slide-Aware Chart Init ───
 function initChartsOnSlide() {
-    const currentSlide = Reveal.getCurrentSlide();
-    if (!currentSlide) return;
-    if (currentSlide.querySelector('#tcoLine')) initLineChart();
-    if (currentSlide.querySelector('#tcoBar')) initBarChart();
+    const slide = Reveal.getCurrentSlide();
+    if (!slide) return;
+    if (slide.querySelector('#tcoLine')) initLineChart();
 }
 
-Reveal.on('slidechanged', () => initChartsOnSlide());
-Reveal.on('ready', () => initChartsOnSlide());
+// ─── Event Listeners ───
+Reveal.on('slidechanged', () => {
+    updateProgress();
+    initChartsOnSlide();
+});
+Reveal.on('ready', () => {
+    updateProgress();
+    initChartsOnSlide();
+});

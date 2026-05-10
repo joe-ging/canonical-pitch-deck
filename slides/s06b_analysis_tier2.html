@@ -1,0 +1,15 @@
+<section>
+<h3>06. Workload Decomposition: Tiers 2-5</h3>
+<h2>Media Signaling & Application Core</h2>
+<table class="dt">
+<thead><tr><th>Tier</th><th>Sizing Logic</th><th>Rationale</th><th>vCPUs</th></tr></thead>
+<tbody>
+<tr><td><strong>Tier 2: Media</strong></td><td>420k CCU ÷ 80 conn/vCPU</td><td>Signaling, WebRTC relay, TURN</td><td class="hl">6,300</td></tr>
+<tr><td><strong>Tier 3: App/API</strong></td><td>420k CCU ÷ 150 users/vCPU</td><td>Auth, Dashboard, Class Meta</td><td class="hl">2,800</td></tr>
+<tr><td><strong>Tier 4: Database</strong></td><td>8 Nodes × 256GB RAM</td><td>PG/Redis/ES clusters</td><td class="hl">2,400</td></tr>
+<tr><td><strong>Tier 5: AI</strong></td><td>1 vCPU per 200 concurrent users</td><td>NLP, Auto-grading, Speech</td><td class="hl">2,100</td></tr>
+<tr class="total"><td>Tiers 2-5 Total</td><td>(+ Safety Margin)</td><td></td><td>~14,000 vCPUs</td></tr>
+</tbody>
+</table>
+<p class="note">Combined with Tier 1, this brings the total requirement to **54,640 vCPUs**.</p>
+</section>

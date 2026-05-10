@@ -94,38 +94,37 @@
 
 
 <section>
-<h3>05. Workload Decomposition (Part 1)</h3>
-<h2>Tier 1: Video Transcoding (The Cost Monster)</h2>
-<p style="font-size:1.1em!important; margin-bottom:20px">Live video transcoded into 4 ABR outputs (1080p/720p/480p/360p, H.264)</p>
+<h3>05. Workload Decomposition: Tier 1</h3>
+<h2>Video Transcoding (74% of Compute)</h2>
 <table class="dt">
 <thead><tr><th>Metric</th><th>Calculation</th><th>Result</th></tr></thead>
 <tbody>
-<tr><td>Concurrent large classes</td><td>420k × 70% ÷ 200 std/cls</td><td class="hl">1,470 classes</td></tr>
-<tr><td>vCPUs per large class</td><td>4 resolutions × 2 vCPUs/stream</td><td class="hl">8 vCPUs</td></tr>
-<tr><td>Large class subtotal</td><td>1,470 × 8</td><td class="hl">11,760 vCPUs</td></tr>
-<tr><td>Concurrent small groups</td><td>420k × 30% ÷ 20 std/grp</td><td class="hl">6,300 groups</td></tr>
-<tr><td>vCPUs per small group</td><td>SFU relay + 2 composite feeds × 2 vCPUs</td><td class="hl">4 vCPUs</td></tr>
-<tr><td>Small group subtotal</td><td>6,300 × 4</td><td class="hl">25,200 vCPUs</td></tr>
-<tr class="total"><td>Transcoding Total</td><td>(+10% safety margin)</td><td>~40,650 vCPUs</td></tr>
+<tr><td>Concurrent Large Classes</td><td>420k × 70% ÷ 200 std/cls</td><td>1,470 classes</td></tr>
+<tr><td>vCPUs per Large Class</td><td>4 ABR outputs × 2 vCPUs</td><td>8 vCPUs</td></tr>
+<tr><td>Large Class Subtotal</td><td>1,470 × 8</td><td>11,760 vCPUs</td></tr>
+<tr><td>Concurrent Small Groups</td><td>420k × 30% ÷ 20 std/grp</td><td>6,300 groups</td></tr>
+<tr><td>vCPUs per Small Group</td><td>SFU relay + 2 composite feeds</td><td>4 vCPUs</td></tr>
+<tr><td>Small Group Subtotal</td><td>6,300 × 4</td><td>25,200 vCPUs</td></tr>
+<tr class="total"><td>Tier 1 Total</td><td>(+10% Safety Headroom)</td><td>~40,650 vCPUs</td></tr>
 </tbody>
 </table>
-<p class="note">Small groups are more expensive because EVERY student's video feed requires processing via SFU.</p>
 </section>
 
 
 <section>
-<h3>05. Workload Decomposition (Part 2)</h3>
-<h2>Supporting Infrastructure Tiers</h2>
+<h3>06. Workload Decomposition: Tiers 2-5</h3>
+<h2>Media Signaling & Application Core</h2>
 <table class="dt">
-<thead><tr><th>Tier</th><th>Purpose</th><th>Rationale</th><th>vCPUs</th></tr></thead>
+<thead><tr><th>Tier</th><th>Sizing Logic</th><th>Rationale</th><th>vCPUs</th></tr></thead>
 <tbody>
-<tr><td><strong>Tier 2: Media</strong></td><td>WebRTC/RTMP Signaling & Relay</td><td>1 vCPU per 80 concurrent connections</td><td class="hl">~6,400</td></tr>
-<tr><td><strong>Tier 3: App/API</strong></td><td>Auth, Scheduling, Payments, Homework</td><td>1 vCPU per 150 concurrent users</td><td class="hl">~3,200</td></tr>
-<tr><td><strong>Tier 4: Database</strong></td><td>PG clusters, Redis cache, ElasticSearch</td><td>128GB+ RAM per node; 24/7 analytics</td><td class="hl">~2,400</td></tr>
-<tr><td><strong>Tier 5: AI</strong></td><td>Speech recognition, auto-grading</td><td>CPU-based inference for cost sensitivity</td><td class="hl">~2,000</td></tr>
+<tr><td><strong>Tier 2: Media</strong></td><td>420k CCU ÷ 80 conn/vCPU</td><td>Signaling, WebRTC relay, TURN</td><td class="hl">6,300</td></tr>
+<tr><td><strong>Tier 3: App/API</strong></td><td>420k CCU ÷ 150 users/vCPU</td><td>Auth, Dashboard, Class Meta</td><td class="hl">2,800</td></tr>
+<tr><td><strong>Tier 4: Database</strong></td><td>8 Nodes × 256GB RAM</td><td>PG/Redis/ES clusters</td><td class="hl">2,400</td></tr>
+<tr><td><strong>Tier 5: AI</strong></td><td>1 vCPU per 200 concurrent users</td><td>NLP, Auto-grading, Speech</td><td class="hl">2,100</td></tr>
+<tr class="total"><td>Tiers 2-5 Total</td><td>(+ Safety Margin)</td><td></td><td>~14,000 vCPUs</td></tr>
 </tbody>
 </table>
-<p class="note">Combined, these tiers represent the "Operational Brain" of the platform (26% of compute).</p>
+<p class="note">Combined with Tier 1, this brings the total requirement to **54,640 vCPUs**.</p>
 </section>
 
 
@@ -155,7 +154,7 @@
 
 
 <section>
-<h3>07. Who is Canonical?</h3>
+<h3>08. Who is Canonical?</h3>
 <h2>The Open Source Powerhouse</h2>
 <div class="g2">
 <div style="text-align:left">
@@ -186,7 +185,7 @@
 
 
 <section>
-<h3>08. The Charmed Stack</h3>
+<h3>09. The Charmed Stack</h3>
 <h2>Model-Driven Infrastructure Orchestration</h2>
 <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;width:100%;margin-top:20px">
 <div class="card"><h4 style="font-size:1.4em;color:var(--p)">MAAS</h4><p style="font-size:0.85em!important"><strong>Metal-as-a-Service:</strong> Automated bare-metal lifecycle. Provisions servers via API in minutes, effectively turning physical hardware into a private cloud.</p></div>
@@ -200,7 +199,7 @@
 
 
 <section>
-<h3>09. The Economics of Freedom</h3>
+<h3>10. The Economics of Freedom</h3>
 <h2>Canonical vs. The Alternatives</h2>
 <div class="g2">
 <div>
@@ -230,7 +229,7 @@
 
 
 <section>
-<h3>10. The Proposal</h3>
+<h3>11. The Proposal</h3>
 <h2>Elastic Sovereign Cloud</h2>
 <div class="g2">
 <div style="background:var(--bg);border-radius:12px;padding:30px;text-align:left">
@@ -252,7 +251,7 @@
 
 
 <section>
-<h3>11. Financial Proof</h3>
+<h3>12. Financial Proof</h3>
 <h2>3-Year TCO Comparison ($M)</h2>
 <div class="cbox"><canvas id="tcoBar"></canvas></div>
 <p class="note">Sources: calculator.aws | azure.microsoft.com/pricing/calculator | cloud.google.com/products/calculator | Canonical Pricing Report 2022</p>
@@ -260,7 +259,32 @@
 
 
 <section>
-<h3>12. The Saving</h3>
+<h3>13. Year-by-Year Cost Trajectory</h3>
+<h2>5-Year Cumulative TCO Comparison ($M)</h2>
+<table class="dt">
+<thead><tr><th>Provider</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Year 4</th><th>Year 5</th></tr></thead>
+<tbody>
+<tr><td><strong>AWS</strong></td><td>$13.3M</td><td>$26.6M</td><td>$39.8M</td><td>$53.1M</td><td class="hl">$66.5M</td></tr>
+<tr><td><strong>GCP</strong></td><td>$12.8M</td><td>$25.6M</td><td>$38.4M</td><td>$51.2M</td><td class="hl">$64.0M</td></tr>
+<tr><td><strong>Azure</strong></td><td>$11.9M</td><td>$23.8M</td><td>$35.8M</td><td>$47.7M</td><td class="hl">$59.7M</td></tr>
+<tr class="total"><td><strong>Canonical</strong></td><td>$12.0M</td><td>$15.2M</td><td>$18.4M</td><td>$21.6M</td><td>$24.8M</td></tr>
+</tbody>
+</table>
+<div class="g2" style="margin-top:30px">
+<div style="background:var(--bg);padding:25px;border-radius:8px;text-align:left">
+<p style="font-size:1.1em!important;color:var(--p);font-weight:700">Year 1: Breakeven</p>
+<p style="font-size:0.9em!important">Hardware CapEx ($8.8M) + Managed ($3.2M) = $12.0M. Comparable to cloud.</p>
+</div>
+<div style="background:var(--bg);padding:25px;border-radius:8px;text-align:left">
+<p style="font-size:1.1em!important;color:var(--p);font-weight:700">Year 5: $41.7M Saved vs AWS</p>
+<p style="font-size:0.9em!important">Hardware is paid off. You only pay $3.2M/yr for fully managed operations.</p>
+</div>
+</div>
+</section>
+
+
+<section>
+<h3>14. The Saving</h3>
 <h2>How You Save $21.4M vs AWS</h2>
 <div class="g2">
 <div>
@@ -295,59 +319,67 @@
 
 
 <section>
-<h3>13. Verification: AWS</h3>
-<h2>AWS Pricing Calculator Input Mapping (Singapore)</h2>
+<h3>15. AWS Calculator Mapping</h3>
+<h2>AWS Pricing (ap-southeast-1, 3yr RI)</h2>
 <table class="dt">
-<thead><tr><th>Workload</th><th>Instance Type</th><th>Qty</th><th>vCPUs</th><th>RAM</th><th>Pricing Model</th></tr></thead>
+<thead><tr><th>Workload</th><th>Instance</th><th>Qty</th><th>vCPUs</th><th>3yr Cost</th></tr></thead>
 <tbody>
-<tr><td>Transcoding</td><td><code>c7i.4xlarge</code></td><td>2,540</td><td>16</td><td>32 GB</td><td>3yr Reserved</td></tr>
-<tr><td>Media/WebRTC</td><td><code>c7i.2xlarge</code></td><td>800</td><td>8</td><td>16 GB</td><td>3yr Reserved</td></tr>
-<tr><td>App/API</td><td><code>m7i.2xlarge</code></td><td>400</td><td>8</td><td>32 GB</td><td>3yr Reserved</td></tr>
-<tr><td>Database</td><td><code>r7i.4xlarge</code></td><td>150</td><td>16</td><td>128 GB</td><td>3yr Reserved</td></tr>
-<tr><td>AI Inference</td><td><code>c7i.4xlarge</code></td><td>125</td><td>16</td><td>32 GB</td><td>3yr Reserved</td></tr>
-<tr class="total"><td><strong>Storage / Net</strong></td><td colspan="4">500TB gp3 | 5PB S3 | 1.5PB/mo Egress</td><td>Pay-as-you-go</td></tr>
+<tr><td>Transcoding</td><td><code>c7i.4xlarge</code></td><td>2,540</td><td>40,640</td><td>$22.1M</td></tr>
+<tr><td>Media/WebRTC</td><td><code>c7i.2xlarge</code></td><td>800</td><td>6,400</td><td>$3.5M</td></tr>
+<tr><td>App/API</td><td><code>m7i.2xlarge</code></td><td>400</td><td>3,200</td><td>$2.1M</td></tr>
+<tr><td>Database</td><td><code>r7i.4xlarge</code></td><td>150</td><td>2,400</td><td>$1.6M</td></tr>
+<tr><td>AI Inference</td><td><code>c7i.4xlarge</code></td><td>125</td><td>2,000</td><td>$1.1M</td></tr>
+<tr><td>Storage (gp3 + S3)</td><td colspan="2">500TB + 5PB</td><td>—</td><td>$5.3M</td></tr>
+<tr><td>Egress</td><td colspan="2">1.5PB/mo × $0.09/GB</td><td>—</td><td>$4.1M</td></tr>
+<tr class="total"><td>AWS TOTAL (3yr)</td><td colspan="3"></td><td>$39.8M</td></tr>
 </tbody>
 </table>
-<p class="note">URL: https://calculator.aws/ | Region: ap-southeast-1</p>
+<p class="note">Source: calculator.aws | Region: ap-southeast-1 | Model: 3yr Reserved All Upfront</p>
 </section>
 
 
 <section>
-<h3>14. Verification: Azure</h3>
-<h2>Azure Pricing Calculator Input Mapping (SEA)</h2>
+<h3>16. Azure Calculator Mapping</h3>
+<h2>Azure Pricing (Southeast Asia, 3yr RI)</h2>
 <table class="dt">
-<thead><tr><th>Workload</th><th>Instance Type</th><th>Qty</th><th>vCPUs</th><th>RAM</th><th>Pricing</th></tr></thead>
+<thead><tr><th>Workload</th><th>Instance</th><th>Qty</th><th>vCPUs</th><th>3yr Cost</th></tr></thead>
 <tbody>
-<tr><td>Transcoding</td><td><code>F16s v2</code></td><td>2,540</td><td>16</td><td>32 GB</td><td>3yr Reserved</td></tr>
-<tr><td>Media/WebRTC</td><td><code>F8s v2</code></td><td>800</td><td>8</td><td>16 GB</td><td>3yr Reserved</td></tr>
-<tr><td>App/API</td><td><code>D8s v5</code></td><td>400</td><td>8</td><td>32 GB</td><td>3yr Reserved</td></tr>
-<tr><td>Database</td><td><code>E16s v5</code></td><td>150</td><td>16</td><td>128 GB</td><td>3yr Reserved</td></tr>
-<tr><td>AI Inference</td><td><code>F16s v2</code></td><td>125</td><td>16</td><td>32 GB</td><td>3yr Reserved</td></tr>
+<tr><td>Transcoding</td><td><code>F16s v2</code></td><td>2,540</td><td>40,640</td><td>$19.8M</td></tr>
+<tr><td>Media/WebRTC</td><td><code>F8s v2</code></td><td>800</td><td>6,400</td><td>$3.1M</td></tr>
+<tr><td>App/API</td><td><code>D8s v5</code></td><td>400</td><td>3,200</td><td>$1.9M</td></tr>
+<tr><td>Database</td><td><code>E16s v5</code></td><td>150</td><td>2,400</td><td>$1.5M</td></tr>
+<tr><td>AI Inference</td><td><code>F16s v2</code></td><td>125</td><td>2,000</td><td>$1.0M</td></tr>
+<tr><td>Storage (Managed + Blob)</td><td colspan="2">500TB + 5PB</td><td>—</td><td>$4.8M</td></tr>
+<tr><td>Egress</td><td colspan="2">1.5PB/mo bandwidth</td><td>—</td><td>$3.7M</td></tr>
+<tr class="total"><td>Azure TOTAL (3yr)</td><td colspan="3"></td><td>$35.8M</td></tr>
 </tbody>
 </table>
-<p class="note">URL: azure.microsoft.com/en-us/pricing/calculator/ | Region: Southeast Asia</p>
+<p class="note">Source: azure.microsoft.com/pricing/calculator | Region: Southeast Asia</p>
 </section>
 
 
 <section>
-<h3>14. Verification: Google Cloud</h3>
-<h2>GCP Pricing Calculator Input Mapping (SG)</h2>
+<h3>17. GCP Calculator Mapping</h3>
+<h2>GCP Pricing (asia-southeast1, 3yr CUD)</h2>
 <table class="dt">
-<thead><tr><th>Workload</th><th>Instance Type</th><th>Qty</th><th>vCPUs</th><th>RAM</th><th>Pricing</th></tr></thead>
+<thead><tr><th>Workload</th><th>Instance</th><th>Qty</th><th>vCPUs</th><th>3yr Cost</th></tr></thead>
 <tbody>
-<tr><td>Transcoding</td><td><code>c2-standard-16</code></td><td>2,540</td><td>16</td><td>64 GB</td><td>3yr CUD</td></tr>
-<tr><td>Media/WebRTC</td><td><code>c2-standard-8</code></td><td>800</td><td>8</td><td>32 GB</td><td>3yr CUD</td></tr>
-<tr><td>App/API</td><td><code>e2-standard-8</code></td><td>400</td><td>8</td><td>32 GB</td><td>3yr CUD</td></tr>
-<tr><td>Database</td><td><code>n2-highmem-16</code></td><td>150</td><td>16</td><td>128 GB</td><td>3yr CUD</td></tr>
-<tr><td>AI Inference</td><td><code>c2-standard-16</code></td><td>125</td><td>16</td><td>64 GB</td><td>3yr CUD</td></tr>
+<tr><td>Transcoding</td><td><code>c2-standard-16</code></td><td>2,540</td><td>40,640</td><td>$21.2M</td></tr>
+<tr><td>Media/WebRTC</td><td><code>c2-standard-8</code></td><td>800</td><td>6,400</td><td>$3.3M</td></tr>
+<tr><td>App/API</td><td><code>e2-standard-8</code></td><td>400</td><td>3,200</td><td>$1.8M</td></tr>
+<tr><td>Database</td><td><code>n2-highmem-16</code></td><td>150</td><td>2,400</td><td>$1.4M</td></tr>
+<tr><td>AI Inference</td><td><code>c2-standard-16</code></td><td>125</td><td>2,000</td><td>$1.0M</td></tr>
+<tr><td>Storage (PD + GCS)</td><td colspan="2">500TB + 5PB</td><td>—</td><td>$5.1M</td></tr>
+<tr><td>Egress</td><td colspan="2">1.5PB/mo premium tier</td><td>—</td><td>$4.6M</td></tr>
+<tr class="total"><td>GCP TOTAL (3yr)</td><td colspan="3"></td><td>$38.4M</td></tr>
 </tbody>
 </table>
-<p class="note">URL: cloud.google.com/products/calculator | Region: asia-southeast1</p>
+<p class="note">Source: cloud.google.com/products/calculator | Region: asia-southeast1</p>
 </section>
 
 
 <section>
-<h3>15. Delivering Success</h3>
+<h3>18. Delivering Success</h3>
 <h2>Implementation Roadmap</h2>
 <div class="timeline">
 <div class="tl-item"><h4>Wk 1-2</h4><p>Discovery & Audit</p></div>

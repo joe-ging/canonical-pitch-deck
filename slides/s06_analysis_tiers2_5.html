@@ -1,0 +1,14 @@
+<section>
+<h3>05. Workload Decomposition (Part 2)</h3>
+<h2>Supporting Infrastructure Tiers</h2>
+<table class="dt">
+<thead><tr><th>Tier</th><th>Purpose</th><th>Rationale</th><th>vCPUs</th></tr></thead>
+<tbody>
+<tr><td><strong>Tier 2: Media</strong></td><td>WebRTC/RTMP Signaling & Relay</td><td>1 vCPU per 80 concurrent connections</td><td class="hl">~6,400</td></tr>
+<tr><td><strong>Tier 3: App/API</strong></td><td>Auth, Scheduling, Payments, Homework</td><td>1 vCPU per 150 concurrent users</td><td class="hl">~3,200</td></tr>
+<tr><td><strong>Tier 4: Database</strong></td><td>PG clusters, Redis cache, ElasticSearch</td><td>128GB+ RAM per node; 24/7 analytics</td><td class="hl">~2,400</td></tr>
+<tr><td><strong>Tier 5: AI</strong></td><td>Speech recognition, auto-grading</td><td>CPU-based inference for cost sensitivity</td><td class="hl">~2,000</td></tr>
+</tbody>
+</table>
+<p class="note">Combined, these tiers represent the "Operational Brain" of the platform (26% of compute).</p>
+</section>

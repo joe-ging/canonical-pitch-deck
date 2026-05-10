@@ -1,0 +1,24 @@
+<section>
+<h3>13. Honest Comparison</h3>
+<h2>Annual Cost: Reserved vs K8s vs Private Cloud</h2>
+<table class="dt">
+<thead><tr><th>Cost Component</th><th style="color:#E95420">AWS Reserved</th><th style="color:#E95420">AWS + K8s 弹性</th><th style="color:#772953">Canonical Private</th></tr></thead>
+<tbody>
+<tr><td><strong>Compute</strong></td><td>$9.6M/yr</td><td>~$8.5M/yr</td><td class="hl">$3.2M ops + $2.9M amort.</td></tr>
+<tr><td><strong>Egress (1.5 PB/mo)</strong></td><td>$1.6M/yr</td><td>$1.6M/yr</td><td class="hl">≈ $0</td></tr>
+<tr><td><strong>Object Storage (5 PB)</strong></td><td>$1.5M/yr</td><td>$1.5M/yr</td><td class="hl">≈ $0</td></tr>
+<tr><td><strong>AI Training Compute</strong></td><td>Extra cost</td><td>Extra cost</td><td class="hl">Free (idle HW reuse)</td></tr>
+<tr class="total"><td>Annual Total</td><td>$12.7M</td><td>~$11.6M</td><td>~$6.1M</td></tr>
+</tbody>
+</table>
+<div class="g2" style="margin-top:30px">
+<div style="background:rgba(233,84,32,0.08);padding:25px;border-radius:8px;text-align:left">
+<p style="font-size:1.2em!important"><strong style="color:#E95420">K8s saves ~9%</strong> vs Reserved.</p>
+<p style="font-size:1.1em!important;margin-top:8px">Egress + Storage remain unchanged at <strong>$3.1M/yr</strong>. K8s cannot touch these.</p>
+</div>
+<div style="background:rgba(119,41,83,0.08);padding:25px;border-radius:8px;text-align:left">
+<p style="font-size:1.2em!important"><strong style="color:var(--p)">Canonical saves ~52%</strong> vs Reserved.</p>
+<p style="font-size:1.1em!important;margin-top:8px">Egress = $0 (your DC). Storage = $0 (your disks). AI training = Free bonus.</p>
+</div>
+</div>
+</section>

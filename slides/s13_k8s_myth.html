@@ -1,0 +1,21 @@
+<section>
+<h3>12. The Real Cost Drivers</h3>
+<h2>"Can't We Just Use K8s on AWS?"</h2>
+<div class="g2">
+<div class="card">
+<h4 style="font-size:1.5em;color:var(--p)">The Theory</h4>
+<p style="margin-top:15px">Deploy Kubernetes on AWS. Auto-scale down at night. Only pay for what you use.</p>
+<p style="margin-top:15px;font-weight:700">Sounds logical. But it doesn't work.</p>
+</div>
+<div class="card tl">
+<h4 style="font-size:1.5em;color:var(--t)">The Reality</h4>
+<p style="margin-top:15px">AWS On-Demand pricing is <strong>2.5-3x</strong> more expensive per hour than Reserved Instances.</p>
+<p style="margin-top:15px">Scale down 60% × Pay 2.7x more per unit = <strong>you save almost nothing.</strong></p>
+</div>
+</div>
+<div style="background:rgba(119,41,83,0.06);padding:30px;border-radius:12px;margin-top:30px;border-left:8px solid var(--p);text-align:left">
+<p style="font-size:1.4em!important"><strong>But that's not even the main problem.</strong></p>
+<p style="font-size:1.3em!important;margin-top:10px">K8s optimizes <em>compute</em>. But your two biggest cost drivers — <strong>Egress</strong> and <strong>Storage</strong> — are completely unaffected by container orchestration.</p>
+<p style="font-size:1.3em!important;margin-top:10px">Students still watch videos. 1.5 PB/month still flows out. AWS still charges <strong>$0.09/GB</strong>.</p>
+</div>
+</section>

@@ -1,0 +1,16 @@
+<section>
+<h3>12. Workload Allocation</h3>
+<h2>Where Does Each Tier Go?</h2>
+<table class="dt">
+<thead><tr><th>Tier</th><th>vCPUs</th><th>→ Private Cloud</th><th>→ Public Cloud</th><th>Rationale</th></tr></thead>
+<tbody>
+<tr><td><strong>T1: Transcoding</strong></td><td>40,650</td><td class="hl">~35,000 (base + scheduled peak)</td><td>~5,650 (burst)</td><td>Daily 16-21h peak is predictable. Only exam/enrollment spikes need burst.</td></tr>
+<tr><td><strong>T2: Media/WebRTC</strong></td><td>6,400</td><td class="hl">~5,000 (core SFU/TURN)</td><td>~1,400 (edge CDN)</td><td>China signaling must stay on-soil (PIPL). SG/HK can use CloudFront edge.</td></tr>
+<tr><td><strong>T3: App/API</strong></td><td>3,200</td><td class="hl">3,200 (100%)</td><td>—</td><td>Contains student PII + payment data. Zero cross-border risk.</td></tr>
+<tr><td><strong>T4: Database</strong></td><td>2,400</td><td class="hl">2,400 (100%)</td><td>—</td><td>Academic records, billing, compliance logs. Non-negotiable.</td></tr>
+<tr><td><strong>T5: AI/ML</strong></td><td>2,000</td><td class="hl">2,000 (100%)</td><td>—</td><td>Reuses idle transcoding HW at night. Zero extra cost.</td></tr>
+<tr class="total"><td>Total</td><td>54,650</td><td>~48,000 (88%)</td><td>~7,000 (12%)</td><td></td></tr>
+</tbody>
+</table>
+<p class="note">The 12% on public cloud is auto-scaling — it costs $0 when not in use. Your AWS bill drops from $12.7M/yr to &lt;$0.8M/yr.</p>
+</section>

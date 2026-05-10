@@ -1,20 +1,26 @@
 <section>
 <h3>11. The Proposal</h3>
-<h2>Elastic Sovereign Cloud</h2>
+<h2>Hybrid Cloud — Not "Replace AWS"</h2>
 <div class="g2">
-<div style="background:var(--bg);border-radius:12px;padding:30px;text-align:left">
-<h4 style="font-size:1.3em;color:var(--p)">Peak Window (16:00 - 21:00)</h4>
-<div class="peak-bar" style="width:100%;background:var(--p)">40,650 vCPUs: Live Transcoding</div>
-<div class="peak-bar" style="width:30%;background:var(--t)">Core Services</div>
-<h4 style="font-size:1.3em;color:var(--p);margin-top:40px">Off-Peak Window</h4>
-<div class="peak-bar" style="width:60%;background:#e95420">AI Analytics & ML Training</div>
-<div class="peak-bar" style="width:20%;background:var(--p)">Base VOD</div>
-</div>
 <div style="text-align:left">
-<h4 style="font-size:1.5em;color:var(--t)">Zero Waste with MAAS + Juju</h4>
-<p style="margin-top:15px">Nodes are automatically re-provisioned between workloads.</p>
-<p style="margin-top:10px"><strong>95% Hardware Utilization</strong> vs 30% on Public Cloud.</p>
-<p style="margin-top:20px; font-weight:700">100% PIPL Sovereign on your OWN hardware.</p>
+<h4 style="font-size:1.5em;color:var(--p)">Our Recommendation</h4>
+<p style="margin-top:15px">We are <strong>not</strong> asking you to abandon AWS.</p>
+<p style="margin-top:10px">We recommend a <strong>hybrid architecture</strong> where:</p>
+<ul style="margin-top:15px">
+<li><strong>88% of workload</strong> → Canonical Private Cloud (predictable, sovereign, high-egress)</li>
+<li><strong>12% of workload</strong> → AWS auto-scaling burst (unpredictable spikes only)</li>
+</ul>
+<p style="margin-top:20px;font-weight:700;color:var(--p)">Result: You keep AWS as your "safety airbag", not your primary bill.</p>
+</div>
+<div>
+<table class="dt">
+<thead><tr><th>Placement Principle</th><th>→ Private</th><th>→ Public</th></tr></thead>
+<tbody>
+<tr><td><strong>Predictability</strong></td><td>Stable, scheduled loads</td><td>Bursty, unexpected</td></tr>
+<tr><td><strong>Data Compliance</strong></td><td>Student PII, PIPL</td><td>Non-sensitive only</td></tr>
+<tr><td><strong>Cost Structure</strong></td><td>High egress/storage</td><td>Low-traffic, pay-per-use</td></tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>

@@ -243,28 +243,81 @@
 
 <section>
 <h3>11. The Proposal</h3>
-<h2>Elastic Sovereign Cloud</h2>
+<h2>Hybrid Cloud — Not "Replace AWS"</h2>
 <div class="g2">
-<div style="background:var(--bg);border-radius:12px;padding:30px;text-align:left">
-<h4 style="font-size:1.3em;color:var(--p)">Peak Window (16:00 - 21:00)</h4>
-<div class="peak-bar" style="width:100%;background:var(--p)">40,650 vCPUs: Live Transcoding</div>
-<div class="peak-bar" style="width:30%;background:var(--t)">Core Services</div>
-<h4 style="font-size:1.3em;color:var(--p);margin-top:40px">Off-Peak Window</h4>
-<div class="peak-bar" style="width:60%;background:#e95420">AI Analytics & ML Training</div>
-<div class="peak-bar" style="width:20%;background:var(--p)">Base VOD</div>
-</div>
 <div style="text-align:left">
-<h4 style="font-size:1.5em;color:var(--t)">Zero Waste with MAAS + Juju</h4>
-<p style="margin-top:15px">Nodes are automatically re-provisioned between workloads.</p>
-<p style="margin-top:10px"><strong>95% Hardware Utilization</strong> vs 30% on Public Cloud.</p>
-<p style="margin-top:20px; font-weight:700">100% PIPL Sovereign on your OWN hardware.</p>
+<h4 style="font-size:1.5em;color:var(--p)">Our Recommendation</h4>
+<p style="margin-top:15px">We are <strong>not</strong> asking you to abandon AWS.</p>
+<p style="margin-top:10px">We recommend a <strong>hybrid architecture</strong> where:</p>
+<ul style="margin-top:15px">
+<li><strong>88% of workload</strong> → Canonical Private Cloud (predictable, sovereign, high-egress)</li>
+<li><strong>12% of workload</strong> → AWS auto-scaling burst (unpredictable spikes only)</li>
+</ul>
+<p style="margin-top:20px;font-weight:700;color:var(--p)">Result: You keep AWS as your "safety airbag", not your primary bill.</p>
+</div>
+<div>
+<table class="dt">
+<thead><tr><th>Placement Principle</th><th>→ Private</th><th>→ Public</th></tr></thead>
+<tbody>
+<tr><td><strong>Predictability</strong></td><td>Stable, scheduled loads</td><td>Bursty, unexpected</td></tr>
+<tr><td><strong>Data Compliance</strong></td><td>Student PII, PIPL</td><td>Non-sensitive only</td></tr>
+<tr><td><strong>Cost Structure</strong></td><td>High egress/storage</td><td>Low-traffic, pay-per-use</td></tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
 
 
 <section>
-<h3>12. The Real Cost Drivers</h3>
+<h3>12. Workload Allocation</h3>
+<h2>Where Does Each Tier Go?</h2>
+<table class="dt">
+<thead><tr><th>Tier</th><th>vCPUs</th><th>→ Private Cloud</th><th>→ Public Cloud</th><th>Rationale</th></tr></thead>
+<tbody>
+<tr><td><strong>T1: Transcoding</strong></td><td>40,650</td><td class="hl">~35,000 (base + scheduled peak)</td><td>~5,650 (burst)</td><td>Daily 16-21h peak is predictable. Only exam/enrollment spikes need burst.</td></tr>
+<tr><td><strong>T2: Media/WebRTC</strong></td><td>6,400</td><td class="hl">~5,000 (core SFU/TURN)</td><td>~1,400 (edge CDN)</td><td>China signaling must stay on-soil (PIPL). SG/HK can use CloudFront edge.</td></tr>
+<tr><td><strong>T3: App/API</strong></td><td>3,200</td><td class="hl">3,200 (100%)</td><td>—</td><td>Contains student PII + payment data. Zero cross-border risk.</td></tr>
+<tr><td><strong>T4: Database</strong></td><td>2,400</td><td class="hl">2,400 (100%)</td><td>—</td><td>Academic records, billing, compliance logs. Non-negotiable.</td></tr>
+<tr><td><strong>T5: AI/ML</strong></td><td>2,000</td><td class="hl">2,000 (100%)</td><td>—</td><td>Reuses idle transcoding HW at night. Zero extra cost.</td></tr>
+<tr class="total"><td>Total</td><td>54,650</td><td>~48,000 (88%)</td><td>~7,000 (12%)</td><td></td></tr>
+</tbody>
+</table>
+<p class="note">The 12% on public cloud is auto-scaling — it costs $0 when not in use. Your AWS bill drops from $12.7M/yr to &lt;$0.8M/yr.</p>
+</section>
+
+
+<section>
+<h3>13. Zero-Downtime Migration</h3>
+<h2>Your Business Never Stops</h2>
+<div class="g2">
+<div style="text-align:left">
+<h4 style="font-size:1.5em;color:var(--p)">Shadow-Run Architecture</h4>
+<p style="margin-top:15px">We run <strong>both systems in parallel</strong> during migration. Your existing AWS environment stays live while the private cloud is built, tested, and validated.</p>
+<ul style="margin-top:20px">
+<li><strong>Phase 1:</strong> Private cloud built alongside AWS (zero impact)</li>
+<li><strong>Phase 2:</strong> Shadow traffic — mirror 10% of real load to private cloud</li>
+<li><strong>Phase 3:</strong> Gradual shift — 10% → 30% → 60% → 100% over 8 weeks</li>
+<li><strong>Phase 4:</strong> AWS becomes burst-only backup</li>
+</ul>
+</div>
+<div>
+<div class="card">
+<h4 style="font-size:1.3em;color:var(--p)">Instant Rollback</h4>
+<p style="margin-top:10px">At any phase, if KPIs degrade (latency, error rate), traffic routes back to AWS within <strong>60 seconds</strong> via DNS failover.</p>
+</div>
+<div class="card tl" style="margin-top:20px">
+<h4 style="font-size:1.3em;color:var(--t)">CTO Guarantee</h4>
+<p style="margin-top:10px">Your students never notice. Your teachers never notice. The migration happens <strong>behind the scenes</strong> while classes run normally.</p>
+<p style="margin-top:10px;font-weight:700">Zero downtime. Zero risk to your SLA.</p>
+</div>
+</div>
+</div>
+</section>
+
+
+<section>
+<h3>14. The Real Cost Drivers</h3>
 <h2>"Can't We Just Use K8s on AWS?"</h2>
 <div class="g2">
 <div class="card">
@@ -287,7 +340,7 @@
 
 
 <section>
-<h3>13. Honest Comparison</h3>
+<h3>15. Honest Comparison</h3>
 <h2>Annual Cost: Reserved vs K8s vs Private Cloud</h2>
 <table class="dt">
 <thead><tr><th>Cost Component</th><th style="color:#E95420">AWS Reserved</th><th style="color:#E95420">AWS + K8s 弹性</th><th style="color:#772953">Canonical Private</th></tr></thead>
@@ -313,7 +366,7 @@
 
 
 <section>
-<h3>14. Data Sovereignty &amp; Compliance</h3>
+<h3>16. Data Sovereignty &amp; Compliance</h3>
 <h2>Meeting APAC Regulatory Mandates</h2>
 <div class="g2">
 <div>
@@ -341,7 +394,7 @@
 
 
 <section>
-<h3>15. The Numbers</h3>
+<h3>17. The Numbers</h3>
 <h2>3-Year TCO by Provider ($M)</h2>
 <table class="dt">
 <thead><tr><th>Provider</th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>3-Year Total</th><th>vs Canonical</th></tr></thead>
@@ -358,7 +411,7 @@ Sources: calculator.aws | azure.microsoft.com/pricing/calculator | cloud.google.
 
 
 <section>
-<h3>16. Financial Proof</h3>
+<h3>18. Financial Proof</h3>
 <h2>Cumulative TCO Over 3 Years ($M)</h2>
 <div class="cbox"><canvas id="tcoLine"></canvas></div>
 <p class="note">Sources: calculator.aws | azure.microsoft.com/pricing/calculator | cloud.google.com/products/calculator | Canonical Cloud Pricing Report 2022</p>
@@ -366,7 +419,7 @@ Sources: calculator.aws | azure.microsoft.com/pricing/calculator | cloud.google.
 
 
 <section>
-<h3>17. Cost Breakdown: All Providers</h3>
+<h3>19. Cost Breakdown: All Providers</h3>
 <h2>Where Does the Money Go? (3-Year)</h2>
 <table class="dt">
 <thead><tr><th>Cost Component</th><th style="color:#E95420">AWS</th><th style="color:#34A853">GCP</th><th style="color:#0078D4">Azure</th><th style="color:#772953">Canonical</th></tr></thead>
@@ -384,7 +437,7 @@ Sources: calculator.aws | azure.microsoft.com/pricing/calculator | cloud.google.
 
 
 <section>
-<h3>18. Delivering Success</h3>
+<h3>20. Delivering Success</h3>
 <h2>Build → Operate → Transfer</h2>
 <div class="timeline">
 <div class="tl-item"><h4>Wk 1-4</h4><p><strong>Discovery</strong><br>Workload audit, compliance review, DC site survey</p></div>

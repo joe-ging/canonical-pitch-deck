@@ -45,13 +45,17 @@
         }
         .transcript-container {
             flex-grow: 1;
-            font-size: 32px; /* Large for easy reading */
-            line-height: 1.6;
-            overflow-y: auto;
-            padding: 20px;
+            overflow: hidden; /* No scrolling allowed */
+            padding: 40px;
             background-color: #222;
             border-radius: 8px;
             white-space: pre-wrap;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: font-size 0.1s ease-out;
         }
         .ipa {
             color: #888;
@@ -185,7 +189,35 @@
             if (!fromSync) {
                 localStorage.setItem('syncSlide', currentSlide);
             }
+            
+            // Wait for DOM update then scale
+            setTimeout(autoScaleText, 0);
         }
+
+        function autoScaleText() {
+            const container = document.getElementById('transcript-content');
+            if (!container) return;
+            
+            let min = 10;
+            let max = 150;
+            let bestSize = min;
+            
+            // Binary search for the best font size
+            while (min <= max) {
+                let mid = Math.floor((min + max) / 2);
+                container.style.fontSize = mid + 'px';
+                
+                if (container.scrollHeight <= container.offsetHeight && container.scrollWidth <= container.offsetWidth) {
+                    bestSize = mid;
+                    min = mid + 1;
+                } else {
+                    max = mid - 1;
+                }
+            }
+            container.style.fontSize = bestSize + 'px';
+        }
+
+        window.addEventListener('resize', autoScaleText);
 
         function nextSlide() {
             if (currentSlide < transcripts.length - 1) {

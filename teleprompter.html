@@ -3,69 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Margot's Teleprompter</title>
+    <title>Margot's Premium Teleprompter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #0a0a0a;
+            --card: #161616;
+            --accent: #E95420; /* Canonical Orange */
+            --text: #ffffff;
+            --dim: #888;
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #111;
-            color: #eee;
+            font-family: 'Ubuntu', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
             flex-direction: column;
             height: 100vh;
+            width: 100vw;
+            overflow: hidden;
             box-sizing: border-box;
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #333;
-            margin-bottom: 20px;
-        }
-        .controls button {
-            background-color: #E95420; /* Canonical Orange */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        .controls button:disabled {
-            background-color: #555;
-            cursor: not-allowed;
+            padding: 15px 30px;
+            background: var(--card);
+            border-bottom: 2px solid var(--accent);
+            z-index: 10;
         }
         .slide-indicator {
-            font-size: 24px;
-            font-weight: bold;
-            color: #E95420;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .transcript-container {
+        .controls button {
+            background-color: transparent;
+            color: var(--text);
+            border: 1px solid #444;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.2s;
+        }
+        .controls button:hover:not(:disabled) {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        .controls button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .transcript-wrapper {
             flex-grow: 1;
-            overflow: hidden; /* No scrolling allowed */
-            padding: 40px;
-            background-color: #222;
-            border-radius: 8px;
-            white-space: pre-wrap;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5vh 8vw; /* Generous padding for premium look */
+            box-sizing: border-box;
+        }
+        #transcript-content {
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            transition: font-size 0.1s ease-out;
+            white-space: pre-wrap;
+            line-height: 1.45;
+            font-weight: 400;
+            color: #f0f0f0;
         }
         .ipa {
-            color: #888;
-            font-size: 0.8em;
+            color: var(--dim);
+            font-size: 0.7em;
+            font-weight: 300;
+            display: block;
+            margin-bottom: 10px;
         }
-        .hint {
-            font-size: 14px;
-            color: #aaa;
+        .footer-hint {
+            padding: 8px;
+            font-size: 11px;
+            color: #444;
             text-align: center;
-            margin-top: 10px;
+            background: rgba(0,0,0,0.5);
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
@@ -74,16 +106,20 @@
     <div class="header">
         <div class="slide-indicator" id="slide-title">Slide 0: Cover</div>
         <div class="controls">
-            <button id="prev-btn" onclick="prevSlide()">◀ Previous (Left Arrow)</button>
-            <button id="next-btn" onclick="nextSlide()">Next (Right Arrow) ▶</button>
+            <button id="prev-btn" onclick="prevSlide()">◀ PREV</button>
+            <button id="next-btn" onclick="nextSlide()">NEXT ▶</button>
         </div>
     </div>
 
-    <div class="transcript-container" id="transcript-content">
-        <!-- Transcript will be loaded here -->
+    <div class="transcript-wrapper">
+        <div id="transcript-content">
+            <!-- Transcript will be loaded here -->
+        </div>
     </div>
 
-    <div class="hint">Press Left/Right arrow keys to change slides. Syncs with index.html via localStorage.</div>
+    <div class="footer-hint" id="sync-status">
+        Cloud Sync Active: ?sync=netease_2026
+    </div>
 
     <script>
         const transcripts = [
@@ -178,6 +214,7 @@
         ];
 
         let currentSlide = 0;
+        let isScaling = false;
 
         function updateUI(fromSync = false) {
             document.getElementById('slide-title').innerText = transcripts[currentSlide].title;
@@ -190,34 +227,62 @@
                 localStorage.setItem('syncSlide', currentSlide);
             }
             
-            // Wait for DOM update then scale
-            setTimeout(autoScaleText, 0);
+            // Re-scale text after a short delay to ensure DOM has rendered
+            requestAnimationFrame(autoScaleText);
         }
 
         function autoScaleText() {
-            const container = document.getElementById('transcript-content');
-            if (!container) return;
+            if (isScaling) return;
+            isScaling = true;
             
+            const container = document.getElementById('transcript-content');
+            if (!container) { isScaling = false; return; }
+            
+            const parent = container.parentElement;
+            const maxWidth = parent.clientWidth - 80; // Account for padding
+            const maxHeight = parent.clientHeight - 80;
+            
+            // 1. Reset to a sensible starting point (not too big, not too small)
+            let size = 40; 
+            container.style.fontSize = size + 'px';
+            
+            // 2. Optimization: Fast grow/shrink to get close
+            if (container.scrollHeight <= maxHeight && container.scrollWidth <= maxWidth) {
+                // Grow quickly
+                while (container.scrollHeight <= maxHeight && container.scrollWidth <= maxWidth && size < 120) {
+                    size += 5;
+                    container.style.fontSize = size + 'px';
+                }
+            }
+            
+            // 3. Binary search for precision
             let min = 10;
             let max = 150;
-            let bestSize = min;
+            let bestSize = 24; // Sensible minimum default
             
-            // Binary search for the best font size
             while (min <= max) {
                 let mid = Math.floor((min + max) / 2);
                 container.style.fontSize = mid + 'px';
                 
-                if (container.scrollHeight <= container.offsetHeight && container.scrollWidth <= container.offsetWidth) {
+                if (container.scrollHeight <= maxHeight && container.scrollWidth <= maxWidth) {
                     bestSize = mid;
                     min = mid + 1;
                 } else {
                     max = mid - 1;
                 }
             }
-            container.style.fontSize = bestSize + 'px';
+            
+            // Apply the best size found, with a safety margin (92% of best) 
+            // and ensure it doesn't drop below 20px for readability
+            const finalSize = Math.max(20, Math.floor(bestSize * 0.92));
+            container.style.fontSize = finalSize + 'px';
+            isScaling = false;
         }
 
-        window.addEventListener('resize', autoScaleText);
+        window.addEventListener('resize', () => {
+            clearTimeout(window.resizeTimer);
+            window.resizeTimer = setTimeout(autoScaleText, 100);
+        });
 
         function nextSlide() {
             if (currentSlide < transcripts.length - 1) {
@@ -243,7 +308,6 @@
             }
         });
 
-        // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') {
                 nextSlide();
@@ -252,28 +316,30 @@
             }
         });
 
-        // Initial render
-        updateUI();
-
-        // ─── Cloud Sync Polling (Multi-device) ───
+        // Initial setup
         const urlParams = new URLSearchParams(window.location.search);
         const syncKey = urlParams.get('sync');
-
         if (syncKey) {
-            console.log('Cloud Sync Enabled with key:', syncKey);
+            document.getElementById('sync-status').innerText = `Cloud Sync Active: ?sync=${syncKey}`;
             setInterval(async () => {
                 try {
                     const response = await fetch(`https://api.keyvalue.xyz/${syncKey}/currentSlide`);
-                    const newIndex = parseInt(await response.text());
-                    if (!isNaN(newIndex) && newIndex !== currentSlide) {
-                        currentSlide = newIndex;
-                        updateUI(true);
+                    if (response.ok) {
+                        const val = await response.text();
+                        const newIndex = parseInt(val);
+                        if (!isNaN(newIndex) && newIndex !== currentSlide && newIndex >= 0 && newIndex < transcripts.length) {
+                            currentSlide = newIndex;
+                            updateUI(true);
+                        }
                     }
-                } catch (err) {
-                    // Silently ignore polling errors
-                }
-            }, 800); // Poll every 800ms
+                } catch (err) {}
+            }, 1000);
         }
+
+        // Run once DOM is fully ready
+        window.addEventListener('load', () => {
+            updateUI();
+        });
     </script>
 </body>
 </html>

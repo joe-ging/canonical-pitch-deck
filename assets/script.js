@@ -161,11 +161,37 @@ function initChartsOnSlide() {
 }
 
 // ─── Event Listeners ───
-Reveal.on('slidechanged', () => {
+Reveal.on('slidechanged', (event) => {
     updateProgress();
     initChartsOnSlide();
+    localStorage.setItem('syncSlide', event.indexh);
+    syncToCloud(event.indexh);
 });
-Reveal.on('ready', () => {
+Reveal.on('ready', (event) => {
     updateProgress();
     initChartsOnSlide();
+    localStorage.setItem('syncSlide', event.indexh);
+    syncToCloud(event.indexh);
+});
+
+// ─── Cloud Sync (Multi-device) ───
+const urlParams = new URLSearchParams(window.location.search);
+const syncKey = urlParams.get('sync');
+
+function syncToCloud(index) {
+    if (!syncKey) return;
+    // Use a simple public KV store for cross-device sync
+    // We use a unique key per session
+    fetch(`https://api.keyvalue.xyz/${syncKey}/currentSlide/${index}`, {
+        method: 'POST'
+    }).catch(err => console.error('Sync error:', err));
+}
+
+window.addEventListener('storage', (e) => {
+    if (e.key === 'syncSlide') {
+        const slideIndex = parseInt(e.newValue);
+        if (!isNaN(slideIndex) && slideIndex !== Reveal.getState().indexh) {
+            Reveal.slide(slideIndex);
+        }
+    }
 });

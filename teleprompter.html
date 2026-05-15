@@ -65,22 +65,17 @@
         .transcript-wrapper {
             flex-grow: 1;
             position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5vh 8vw; /* Generous padding for premium look */
+            padding: 5vh 6vw;
             box-sizing: border-box;
+            overflow: hidden;
         }
         #transcript-content {
+            display: block;
             width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             text-align: center;
-            white-space: pre-wrap;
-            line-height: 1.45;
+            white-space: normal;
+            word-wrap: break-word;
+            line-height: 1.5;
             font-weight: 400;
             color: #f0f0f0;
         }
@@ -227,8 +222,8 @@
                 localStorage.setItem('syncSlide', currentSlide);
             }
             
-            // Re-scale text after a short delay to ensure DOM has rendered
-            requestAnimationFrame(autoScaleText);
+            // Double rAF ensures layout has settled before measuring
+            requestAnimationFrame(() => requestAnimationFrame(autoScaleText));
         }
 
         function autoScaleText() {
@@ -236,46 +231,39 @@
             isScaling = true;
             
             const container = document.getElementById('transcript-content');
-            if (!container) { isScaling = false; return; }
+            const parent = document.querySelector('.transcript-wrapper');
+            if (!container || !parent) { isScaling = false; return; }
             
-            const parent = container.parentElement;
-            const maxWidth = parent.clientWidth - 80; // Account for padding
-            const maxHeight = parent.clientHeight - 80;
+            // Use parent's actual content area (CSS padding is already handled)
+            const maxWidth = parent.clientWidth;
+            const maxHeight = parent.clientHeight;
             
-            // 1. Reset to a sensible starting point (not too big, not too small)
-            let size = 40; 
-            container.style.fontSize = size + 'px';
-            
-            // 2. Optimization: Fast grow/shrink to get close
-            if (container.scrollHeight <= maxHeight && container.scrollWidth <= maxWidth) {
-                // Grow quickly
-                while (container.scrollHeight <= maxHeight && container.scrollWidth <= maxWidth && size < 120) {
-                    size += 5;
-                    container.style.fontSize = size + 'px';
-                }
+            // Guard: if layout hasn't settled yet, retry
+            if (maxHeight < 50) {
+                isScaling = false;
+                setTimeout(autoScaleText, 50);
+                return;
             }
             
-            // 3. Binary search for precision
-            let min = 10;
-            let max = 150;
-            let bestSize = 24; // Sensible minimum default
+            // Binary search for the largest font that fits
+            let lo = 14;
+            let hi = 120;
+            let bestSize = lo;
             
-            while (min <= max) {
-                let mid = Math.floor((min + max) / 2);
+            while (lo <= hi) {
+                let mid = Math.floor((lo + hi) / 2);
                 container.style.fontSize = mid + 'px';
                 
                 if (container.scrollHeight <= maxHeight && container.scrollWidth <= maxWidth) {
                     bestSize = mid;
-                    min = mid + 1;
+                    lo = mid + 1;
                 } else {
-                    max = mid - 1;
+                    hi = mid - 1;
                 }
             }
             
-            // Apply the best size found, with a safety margin (92% of best) 
-            // and ensure it doesn't drop below 20px for readability
-            const finalSize = Math.max(20, Math.floor(bestSize * 0.92));
-            container.style.fontSize = finalSize + 'px';
+            // Apply with a small safety margin to avoid edge-case overflow
+            container.style.fontSize = Math.max(14, bestSize - 1) + 'px';
             isScaling = false;
         }
 

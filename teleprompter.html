@@ -308,10 +308,10 @@
         const urlParams = new URLSearchParams(window.location.search);
         const syncKey = urlParams.get('sync');
         if (syncKey) {
-            document.getElementById('sync-status').innerText = `Cloud Sync Active: ?sync=${syncKey}`;
+            document.getElementById('sync-status').innerText = `Local Sync Active: ?sync=${syncKey}`;
             setInterval(async () => {
                 try {
-                    const response = await fetch(`https://api.keyvalue.xyz/${syncKey}/currentSlide`);
+                    const response = await fetch(`/api/sync/${syncKey}?t=${Date.now()}`);
                     if (response.ok) {
                         const val = await response.text();
                         const newIndex = parseInt(val);
@@ -321,7 +321,7 @@
                         }
                     }
                 } catch (err) {}
-            }, 1000);
+            }, 500); // Polling every 500ms for snappier responses
         }
 
         // Run once DOM is fully ready

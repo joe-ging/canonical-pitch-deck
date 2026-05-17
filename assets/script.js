@@ -180,9 +180,7 @@ const syncKey = urlParams.get('sync');
 
 function syncToCloud(index) {
     if (!syncKey) return;
-    // Use a simple public KV store for cross-device sync
-    // We use a unique key per session
-    fetch(`https://api.keyvalue.xyz/${syncKey}/currentSlide/${index}`, {
+    fetch(`/api/sync/${syncKey}/${index}`, {
         method: 'POST'
     }).catch(err => console.error('Sync error:', err));
 }
